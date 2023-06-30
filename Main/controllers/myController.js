@@ -22,7 +22,7 @@ const {User, My} = require('../models');
             console.log(err);
             return res.status(400).json(err);
         }
-    }
+    },
 
     async createUser(req, res) {
         try {
@@ -33,7 +33,7 @@ const {User, My} = require('../models');
             console.log(err);
             return res.status(400).json(err);
         }
-    }
+    },
 
     async createMy(req, res) {
         try {
@@ -44,7 +44,7 @@ const {User, My} = require('../models');
             console.log(err);
             return res.status(400).json(err);
         }
-    }
+    },
 
     async deleteUsers(req, res) {
         try {
@@ -55,7 +55,7 @@ const {User, My} = require('../models');
             console.log(err);
             return res.status(400).json(err);
         }
-    }
+    },
 
     async deleteMy(req, res) {
         try {
