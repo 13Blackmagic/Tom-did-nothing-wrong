@@ -1,20 +1,5 @@
 const {User, My} = require('../models');
 
-const userSeeds = require('./userSeeds.json');
-const mySeeds = require('./mySeeds.json');
-
-const seedDatabase = async () => {
-    await User.deleteMany();
-    
-    await User.create(userSeeds);
-    
-    await My.deleteMany();
-    
-    await My.create(mySeeds);
-    
-    process.exit(0);
-    }
-
     module.exports = {
         async getUsers(req, res) {
             try {
