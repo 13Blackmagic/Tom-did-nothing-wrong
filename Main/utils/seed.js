@@ -7,7 +7,7 @@ connection.on('error', (err) => err);
 connection.once('open', async () => {
   console.log('connected');
 
-  let applicationCheck = await connection.db.listCollections({ name: 'applications' }).toArray();
+  let applicationCheck = await connection.db.listCollections({ name: 'Thoughts' }).toArray();
   if (applicationCheck.length) {
     await connection.dropCollection('applications');
   }
@@ -18,7 +18,7 @@ connection.once('open', async () => {
   }
 
   const user = [];
-  const thoughts = getRandomThoughts(10);
+  const Thoughts = getRandomThoughts(10);
 
   for (let i = 0; i < 20; i++) {
     const fullName = getRandomUser();
@@ -32,11 +32,11 @@ connection.once('open', async () => {
     });
   }
 
-  await User.collection.insertMany(users);
+  await User.collection.insertMany(user);
   await Thoughts.collection.insertMany(applications);
 
   // loop through the saved applications, for each application we need to generate a application response and insert the application responses
-  console.table(users);
+  console.table(user);
   console.table(Thoughts);
   console.info('Seeding complete! 🌱');
   process.exit(0);
