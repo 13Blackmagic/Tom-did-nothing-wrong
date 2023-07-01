@@ -13,7 +13,7 @@ const {User, Thoughts} = require('../models');
         }
     },
 
-    async getMy(req, res) {
+    async getThoughts(req, res) {
         try {
             const my = await My.find();
             return res.json(my);
