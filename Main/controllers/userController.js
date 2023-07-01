@@ -1,58 +1,52 @@
-const {ObjectId} = require('mongoose').Types;
-const {User, My} = require('../models');
-
-const headCount = async (req, res) => {
-    const numberOfUsers = await User.countDocuments();
-    const numberOfMy = await My.countDocuments();
-    return res.json({numberOfUsers, numberOfMy});
-};
-
-const getUsers = async (req, res) => {
-    try {
-        const users = await User.find();
-        return res.json(users);
-    }
-    catch (err) {
-        console.log(err);
-        return res.status(400).json(err);
-    }
-}
+const {User, Thoughts} = require('../models');
 
 module.exports = {
+    // Get all users
     async getUsers(req, res) {
-        try {
-            const users = await User.find();
-            return res.json(users);
+      try {
+        const users = await User.find();
+        res.json(users);
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    },
+    // Get a single user
+    async getSingleUser(req, res) {
+      try {
+        const user = await User.findOne({ _id: req.params.userId })
+          .select('-__v');
+  
+        if (!user) {
+          return res.status(404).json({ message: 'No user with that ID' });
         }
-        catch (err) {
-            console.log(err);
-            return res.status(400).json(err);
-        }
-    }
-},
-
-async getSingleUser(req, res) {
-    try {
-        const user = await User.findById(req.params.id);
-        return res.json(user);
-    }
-    catch (err) {
-        console.log(err);
-        return res.status(400).json(err);
-    }
-},
-
-async createUser(req, res) {
-    try {
+  
+        res.json(user);
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    },
+    // create a new user
+    async createUser(req, res) {
+      try {
         const user = await User.create(req.body);
         res.json(user);
-    }
-    catch (err) {
-        console.log(err);
-        return res.status(400).json(err);
-    }
-},
-
-async deleteUser(req, res) {
-    try {
-        const user = awain user
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    },
+    // Delete a user and associated apps
+    async deleteUser(req, res) {
+      try {
+        const user = await User.findOneAndDelete({ _id: req.params.userId });
+  
+        if (!user) {
+          return res.status(404).json({ message: 'No user with that ID' });
+        }
+  
+        await Application.deleteMany({ _id: { $in: user.applications } });
+        res.json({ message: 'User and associated apps deleted!' })
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    },
+  };
