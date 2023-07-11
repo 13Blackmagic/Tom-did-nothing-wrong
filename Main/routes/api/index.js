@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const myController = require("../../controllers/ThoughtsController");
-const userController = require("../../controllers/userController");
+const myController = require("./Thoughtsroutes");
+const userController = require("./userRoutes");
 
 router.use('/thoughts', myController);
 router.use('/user', userController);
