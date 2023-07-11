@@ -38,6 +38,6 @@ thoughtsSchema
   });
 
 
-const Thought = model('Thought', thoughtSchema);
+const Thought = model('Thought', thoughtsSchema);
 
 module.exports =Thought;
