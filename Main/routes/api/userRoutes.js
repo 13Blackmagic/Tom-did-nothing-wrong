@@ -7,6 +7,6 @@ const{
 
 router.route('/').get(getUsers).post(createUser);
 
-router.route('/:userId').get(getSingleUser).post(createMy);
+router.route('/:userId').get(getSingleUser).post(createUser);
 
 module.exports = router;
