@@ -27,10 +27,10 @@ const {Thought, User} = require('../models');
           
           async createThought(req, res) {
             try {
-              const Thought = await Thought.create(req.body);
+              const thoughtData = await Thought.create(req.body);
               const user = await User.findOneAndUpdate(
                 { _id: req.body.userId },
-                { $addToSet: { Thought: Thought._id } },
+                { $addToSet: { thoughts: thoughtData._id } },
                 { new: true }
               );
         
@@ -40,7 +40,7 @@ const {Thought, User} = require('../models');
                 })
               }
         
-              res.json('Created the Thoughts 🎉');
+              res.json(thoughtData);
             } catch (err) {
               console.log(err);
               res.status(500).json(err);
@@ -49,17 +49,18 @@ const {Thought, User} = require('../models');
           
           async updateThought(req, res) {
             try {
-              const Thought = await Thought.findOneAndUpdate(
-                { _id: req.params.ThoughtsId },
+              console.log(req.params);
+              const thoughtData = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
                 { $set: req.body },
                 { runValidators: true, new: true }
               );
         
-              if (!Thought) {
+              if (!thoughtData) {
                 return res.status(404).json({ message: 'No Thoughts with this id!' });
               }
         
-              res.json(Thought);
+              res.json(thoughtData);
             } catch (err) {
               console.log(err);
               res.status(500).json(err);
@@ -68,21 +69,21 @@ const {Thought, User} = require('../models');
           
           async deleteThought(req, res) {
             try {
-              const Thought = await Thought.findOneAndRemove({ _id: req.params.ThoughtsId });
+              const thoughtData = await Thought.findOneAndRemove({ _id: req.params.thoughtId });
         
-              if (!Thought) {
+              if (!thoughtData) {
                 return res.status(404).json({ message: 'No Thoughts with this id!' });
               }
         
               const user = await User.findOneAndUpdate(
-                { Thought: req.params.ThoughtsId },
-                { $pull: { Thought: req.params.ThoughtId } },
+                { thoughts: req.params.thoughtId },
+                { $pull: { Thought: req.params.thoughtId } },
                 { new: true }
               );
         
               if (!user) {
                 return res.status(404).json({
-                  message: 'Thought created but no user with this id!',
+                  message: 'Thought Deleted but no user with this id!',
                 });
               }
         
