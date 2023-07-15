@@ -6,7 +6,7 @@ const thoughtSchema = new Schema(
     thoughtText: {
       type: String,
       required: true,
-      minLength: 1,
+      minLength: 4,
       maxLength: 280,
     },
     createdAt: {
