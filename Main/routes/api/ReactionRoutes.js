@@ -11,10 +11,10 @@ router.route('/').get(getReactions).post(createReaction);
 
 router
     .route('/:reactionId')
-    .get(getSingleReaction)
+    .get(getReactions)
     .get(getSingleReaction)
     .put(updateReaction)
-    .get(getSingleReaction)
+    .put(createReaction)
     .delete(deleteReaction);
 
 module.exports = router;

@@ -92,29 +92,11 @@ const {Thought, User} = require('../models');
             }
           },
           
-          async addTag(req, res) {
+          async addReaction(req, res) {
             try {
               const Thought = await Thought.findOneAndUpdate(
-                { _id: req.params.ThoughtId },
-                { $addToSet: { tags: req.body } },
-                { runValidators: true, new: true }
-              );
-        
-              if (!Thought) {
-                return res.status(404).json({ message: 'No Thoughts with this id!' });
-              }
-        
-              res.json(Thoughts);
-            } catch (err) {
-              res.status(500).json(err);
-            }
-          },
-          
-          async removeTag(req, res) {
-            try {
-              const Thought = await Thought.findOneAndUpdate(
-                { _id: req.params.ThoughtId },
-                { $pull: { tags: { tagId: req.params.tagId } } },
+                { _id: req.params.ThoughtsId },
+                { $addToSet: { reaction: req.body } },
                 { runValidators: true, new: true }
               );
         
@@ -124,9 +106,29 @@ const {Thought, User} = require('../models');
         
               res.json(Thought);
             } catch (err) {
+              console.log(err);
               res.status(500).json(err);
             }
           },
+
+          async deleteReaction(req, res) {
+            try {
+              const Thought = await Thought.findOneAndUpdate(
+                { _id: req.params.ThoughtsId },
+                { $pull: { reaction: { reactionId: req.params.reactionId } } },
+                { runValidators: true, new: true }
+              );
+        
+              if (!Thought) {
+                return res.status(404).json({ message: 'No Thoughts with this id!' });
+              }
+        
+              res.json({ message: 'Successfully deleted the reaction!' });
+            } catch (err) {
+              console.log(err);
+              res.status(500).json(err);
+            }
+          }
         };
         
 
